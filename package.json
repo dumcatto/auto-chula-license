@@ -4,7 +4,7 @@
   "description": "Automate license requesting from Chula IT license portal.",
   "main": "main.js",
   "scripts": {
-    "test": "jest",
+    "test": "node main.js",
     "build": "ncc build"
   },
   "author": "Tonkla W.",
@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
-    "@actions/http-client": "^2.1.1"
+    "@actions/http-client": "^2.1.1",
+    "qs": "^6.11.2"
   }
 }
