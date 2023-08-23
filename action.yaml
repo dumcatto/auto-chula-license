@@ -1,0 +1,13 @@
+name: CU Licenser
+description: Post request to CU license portal
+author: Tonkla W.
+inputs:
+  cunet-email:
+    description: CUNET authentication email
+    required: true
+  cunet-password:
+    description: CUNET authentication password
+    required: true
+runs:
+  using: node16
+  main: dist/index.js

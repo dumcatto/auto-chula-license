@@ -1,0 +1,2 @@
+# auto-chula-license
+sample
