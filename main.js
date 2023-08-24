@@ -1,17 +1,19 @@
 const core = require('@actions/core')
 const httpm = require('@actions/http-client')
 const qs = require('qs')
-const axios = require('axios')
+const moment = require('moment-timezone')
 
 async function run() {
   try {
 
     const inputs = {
       email: core.getInput('cunet-email'),
-      password: core.getInput('cunet-password')
+      password: core.getInput('cunet-password'),
+      licenseID: core.getInput('licenseID')
     }
 
     const url = 'https://licenseportal.it.chula.ac.th'
+    let cookies = {}
 
     // Create a HTTP client
     const client = new httpm.HttpClient('cunet-login-action', [], {
@@ -23,6 +25,13 @@ async function run() {
       }
     })
     core.info('Created HTTP client')
+
+    let res = await client.get(url)
+    core.info('GET request sent')
+    for (let cookie of res.message.headers['set-cookie']) {
+      s = cookie.split(';')[0].split('=')
+      cookies[s[0]] = s[1]
+    }
 
     // Send a POST request (login)
     try {
@@ -40,7 +49,6 @@ async function run() {
       }
 
       // Get cookies
-      cookies = {}
       for (let cookie of res.message.headers['set-cookie']) {
         s = cookie.split(';')[0].split('=')
         cookies[s[0]] = s[1]
@@ -57,18 +65,21 @@ async function run() {
 
     // Send a POST request (get license)
     try {
-      let data = {
-        UserName: inputs.email,
-        Password: inputs.password
-      }
-      let res = await client.post(url, JSON.stringify(data))
+      const date = moment().tz('Asia/Bangkok').locale('th')
+    
+      data = qs.stringify({
+        Domain: inputs.email.split('@')[1],
+        ProgramLicenseID: inputs.licenseID,
+        BorrowDateStr: date.format('L'),
+        ExpiryDateStr: date.add(7, 'days').format('L'),
+        UserPrincipalName: inputs.email
+      })
+      let res = await client.post(url + `/Home/Borrow?${data}`, '', {
+        'Cookie': Object.keys(cookies).map(key => `${key}=${cookies[key]}`).join('; ')
+      })
       core.info('POST request sent')
+      console.log(res.message.statusCode)
 
-      if (res.message.statusCode != 200) {
-        throw new Error(`Request failed with status code ${res.message.statusCode}`)
-      } else if (res.message.headers['set-cookie'].length < 2) {
-        throw new Error('Login failed')
-      }
     } catch (error) {
       throw new Error(`failed to post to: ${error.message}`)
     }
