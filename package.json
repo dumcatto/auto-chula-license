@@ -1,6 +1,6 @@
 {
   "name": "auto-chula-license",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Automate license requesting from Chula IT license portal.",
   "main": "main.js",
   "scripts": {
@@ -11,6 +11,7 @@
   "license": "MIT",
   "devDependencies": {
     "@vercel/ncc": "^0.36.1",
+    "dotenv": "^16.3.1",
     "eslint": "^8.47.0",
     "jest": "^29.6.3"
   },
