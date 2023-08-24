@@ -1,6 +1,6 @@
 {
   "name": "auto-chula-license",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Automate license requesting from Chula IT license portal.",
   "main": "main.js",
   "scripts": {

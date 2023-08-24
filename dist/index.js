@@ -11472,7 +11472,7 @@ async function run() {
     const inputs = {
       email: core.getInput('cunet-email'),
       password: core.getInput('cunet-password'),
-      licenseID: core.getInput('licenseID')
+      licenseID: core.getInput('license-id')
     }
 
     const url = 'https://licenseportal.it.chula.ac.th'
@@ -11548,7 +11548,7 @@ async function run() {
     }
 
   } catch (error) {
-    throw new Error(error.message)
+    core.setFailed(error.message)
   }
 }
 
