@@ -8,6 +8,9 @@ inputs:
   cunet-password:
     description: CUNET authentication password
     required: true
+  license-id:
+    description: License ID from CU license portal
+    required: true
 runs:
   using: node16
   main: dist/index.js
